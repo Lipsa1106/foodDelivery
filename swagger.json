@@ -1,0 +1,172 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API Documentation",
+    "description": "Documentation for API endpoints"
+  },
+  "basePath": "/",
+  "paths": {
+    "/items": {
+      "get": {
+        "summary": "Get all items",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Item"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new item",
+        "parameters": [
+          {
+            "name": "item",
+            "in": "body",
+            "description": "Item object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Item"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Item created successfully"
+          }
+        }
+      }
+    },
+    "/items/{id}": {
+      "get": {
+        "summary": "Get item by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Item ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Item"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update item by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Item ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "item",
+            "in": "body",
+            "description": "Updated item object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Item"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item updated successfully"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete item by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Item ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Item deleted successfully"
+          }
+        }
+      }
+    },
+    "/check": {
+      "post": {
+        "summary": "Check pricing",
+        "description": "Check pricing with the provided data",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "description": "Pricing data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PricingData"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Item": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "PricingData": {
+      "type": "object",
+      "properties": {
+        "zone": {
+          "type": "string"
+        },
+        "organization_id": {
+          "type": "string"
+        },
+        "total_distance": {
+          "type": "number"
+        },
+        "item_type": {
+          "type": "string",
+          "enum": ["perishable", "non-perishable"]
+        }
+      }
+    }
+  }
+}
