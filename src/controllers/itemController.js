@@ -4,8 +4,10 @@ const Item = require("../models/itemModel");
 async function getAllItems(req, res) {
   try {
     const items = await Item.find();
+    console.log("items", items);
     res.status(200).json(items);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
