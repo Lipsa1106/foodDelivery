@@ -107,18 +107,242 @@
         }
       }
     },
-    "/check": {
+    "/organizations": {
+      "get": {
+        "summary": "Get all organizations",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Organization"
+              }
+            }
+          }
+        }
+      },
       "post": {
-        "summary": "Check pricing",
-        "description": "Check pricing with the provided data",
+        "summary": "Create a new organization",
         "parameters": [
           {
-            "name": "data",
+            "name": "organization",
             "in": "body",
-            "description": "Pricing data",
+            "description": "Organization object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Organization"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Organization created successfully"
+          }
+        }
+      }
+    },
+    "/organizations/{id}": {
+      "get": {
+        "summary": "Get organization by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Organization ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Organization"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update organization by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Organization ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "organization",
+            "in": "body",
+            "description": "Updated organization object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Organization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Organization updated successfully"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete organization by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Organization ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Organization deleted successfully"
+          }
+        }
+      }
+    },
+    "/pricing": {
+      "get": {
+        "summary": "Get all pricing",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Pricing"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create pricing",
+        "description": "Create a new pricing entry",
+        "parameters": [
+          {
+            "name": "pricingData",
+            "in": "body",
+            "description": "Pricing data object",
             "required": true,
             "schema": {
               "$ref": "#/definitions/PricingData"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Pricing created successfully"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/pricing/{id}": {
+      "get": {
+        "summary": "Get pricing by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Pricing ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Pricing"
+            }
+          },
+          "404": {
+            "description": "Pricing not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update pricing by ID",
+        "description": "Update a pricing entry by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Pricing ID",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "pricingData",
+            "in": "body",
+            "description": "Updated pricing data object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PricingData"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pricing updated successfully"
+          },
+          "404": {
+            "description": "Pricing not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete pricing by ID",
+        "description": "Delete a pricing entry by its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Pricing ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Pricing deleted successfully"
+          },
+          "404": {
+            "description": "Pricing not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/pricing/check": {
+      "post": {
+        "summary": "Check item pricing",
+        "description": "Check pricing for an item",
+        "parameters": [
+          {
+            "name": "requestData",
+            "in": "body",
+            "description": "Request data object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PricingCheckRequest"
             }
           }
         ],
@@ -128,11 +352,17 @@
             "schema": {
               "type": "object",
               "properties": {
-                "message": {
-                  "type": "string"
+                "total_price": {
+                  "type": "number"
                 }
               }
             }
+          },
+          "404": {
+            "description": "Pricing details not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -150,7 +380,67 @@
         }
       }
     },
+    "Organization": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
     "PricingData": {
+      "type": "object",
+      "properties": {
+        "organization": {
+          "type": "string"
+        },
+        "item": {
+          "type": "string"
+        },
+        "zone": {
+          "type": "string"
+        },
+        "baseDistanceInKm": {
+          "type": "number"
+        },
+        "kmPricePerishable": {
+          "type": "number"
+        },
+        "kmPriceNonPerishable": {
+          "type": "number"
+        },
+        "fixPrice": {
+          "type": "number"
+        }
+      }
+    },
+    "Pricing": {
+      "type": "object",
+      "properties": {
+        "organization": {
+          "type": "string"
+        },
+        "item": {
+          "type": "string"
+        },
+        "zone": {
+          "type": "string"
+        },
+        "baseDistanceInKm": {
+          "type": "number"
+        },
+        "kmPricePerishable": {
+          "type": "number"
+        },
+        "kmPriceNonPerishable": {
+          "type": "number"
+        },
+        "fixPrice": {
+          "type": "number"
+        }
+      }
+    },
+    "PricingCheckRequest": {
       "type": "object",
       "properties": {
         "zone": {
@@ -162,9 +452,8 @@
         "total_distance": {
           "type": "number"
         },
-        "item_type": {
-          "type": "string",
-          "enum": ["perishable", "non-perishable"]
+        "item_id": {
+          "type": "string"
         }
       }
     }

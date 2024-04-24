@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
-const { itemRoutes, pricingRoutes } = require("./src/routes");
+const { itemRoutes, pricingRoutes, organizationRoutes } = require("./src/routes");
 const cors = require("cors");
 const app = express();
 app.use(cors());
@@ -12,6 +12,7 @@ app.use(bodyParser.json());
 
 app.use("/pricing", pricingRoutes);
 app.use("/items", itemRoutes);
+app.use("/organizations", organizationRoutes);
 
 // Swagger documentation
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
