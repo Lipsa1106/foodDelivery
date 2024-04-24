@@ -1,9 +1,9 @@
-// models/itemModel.js
 const mongoose = require("mongoose");
 
 const itemSchema = new mongoose.Schema({
   type: {
     type: String,
+    enum: ["perishable", "non-perishable"],
     required: true,
   },
   description: String,

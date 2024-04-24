@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -9,6 +11,7 @@ const {
   organizationRoutes,
 } = require("./src/routes");
 const cors = require("cors");
+const { MongoClient, ServerApiVersion } = require("mongodb");
 const app = express();
 app.use(cors());
 
@@ -22,14 +25,15 @@ app.use("/organizations", organizationRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Connect to MongoDB
+console.log(process.env?.DB_URL);
+
+const uri = process.env.DB_URL;
+
 mongoose
-  .connect(
-    "mongodb+srv://admin:JNjDFB664RmxdnFK@fooddelivery.mwwpho7.mongodb.net/?retryWrites=true&w=majority&appName=FoodDelivery",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect(process.env.DB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     console.log("Connected to MongoDB");
   })
