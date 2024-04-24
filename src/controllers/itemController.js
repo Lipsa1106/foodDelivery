@@ -24,7 +24,7 @@ async function getItemById(req, res) {
 
 async function createItem(req, res) {
   try {
-    const newItem = await Item.create(req.body);
+    const newItem = await await Item.create(req.body);
     res.status(201).json(newItem);
   } catch (error) {
     res.status(400).json({ error: error.message });
